@@ -6,6 +6,11 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
+// Serve main HTML
+app.get('/', (req, res) => {
+  res.sendFile(require('path').join(__dirname, 'cia3.html'));
+});
+
 // Faculty database
 const facultyData = {
   'bharath@gmail.com': {
@@ -103,6 +108,12 @@ app.get('/faculty/:email', (req, res) => {
 
   const { password: _, ...userData } = user; // exclude password
   res.json(userData);
+});
+
+// Faculty list API (without passwords)
+app.get('/faculty', (req, res) => {
+  const list = Object.values(facultyData).map(({ password, ...rest }) => rest);
+  res.json(list);
 });
 
 app.listen(PORT, () => {

@@ -327,28 +327,38 @@
 
   // Load faculty directory
   async function loadDirectory() {
-    const emails = ['bejoy@christuniversity.in','deepa@christuniversity.in','daniel@christuniversity.in'];
     const container = document.getElementById('facultyCards');
+    const searchInput = document.getElementById('search');
     container.innerHTML = '';
-    for (let email of emails) {
-      try {
-        const res = await fetch(`/faculty/${email}`);
-        const f = await res.json();
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `<div class="avatar"></div>${f.name}`;
-        card.onclick = () => loadFaculty(email);
-        container.appendChild(card);
-      } catch (err) {
-        console.error(err);
+    try {
+      const res = await fetch('/faculty');
+      const facultyList = await res.json();
+
+      function renderCards(filterText = '') {
+        container.innerHTML = '';
+        const term = filterText.toLowerCase();
+        facultyList
+          .filter(f => !term || (f.name && f.name.toLowerCase().includes(term)) || (f.email && f.email.toLowerCase().includes(term)))
+          .forEach(f => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `<div class="avatar"></div>${f.name}`;
+            card.onclick = () => loadFaculty(f.email);
+            container.appendChild(card);
+          });
       }
+
+      renderCards('');
+      searchInput.addEventListener('input', () => renderCards(searchInput.value));
+    } catch (err) {
+      console.error(err);
     }
   }
 
   // Load faculty details
   async function loadFaculty(email) {
     try {
-      const res = await fetch(`/faculty/${email}`);
+      const res = await fetch(`/faculty/${encodeURIComponent(email)}`);
       const f = await res.json();
       document.getElementById('facultyName').textContent = f.name || 'N/A';
       document.getElementById('facultyQual').textContent = f.qualification || 'N/A';
@@ -359,6 +369,16 @@
       alert('Could not retrieve faculty info');
     }
   }
+
+  // Support pressing Enter to submit login
+  ['email','password'].forEach(id => {
+    const el = document.getElementById(id);
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        document.getElementById('loginButton').click();
+      }
+    });
+  });
 
   // Section switching
   function showSection(id) {
