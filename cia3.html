@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christ University Faculty Portal</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: url('christ.jpeg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    .hidden { display: none; }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .navbar {
+      background: #002147;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      color: white;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    h2 { margin-top: 0; }
+    input, button {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .profile-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+    }
+    .profile-sidebar {
+      background: #f8f8f8;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+    .profile-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: #ddd;
+      margin: 0 auto 1rem;
+      position: relative;
+    }
+    .edit-photo-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: #6c63ff;
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .quick-access { margin-top: 2rem; text-align: left; }
+    .quick-access ul { list-style: none; padding: 0; }
+    .quick-access li { padding: 0.5rem 0; cursor: pointer; }
+    .profile-content { padding: 1rem; }
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .profile-name { font-size: 1.8rem; font-weight: bold; }
+    .profile-qualifications { color: #666; }
+    .profile-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .detail-card {
+      background: #f8f8f8;
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
+    .detail-title { font-weight: bold; margin-bottom: 0.5rem; color: #002147; }
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #002147;
+      font-size: 1.2rem;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tag {
+      background: #e6e6e6;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.9rem;
+    }
+    .card-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .card {
+      background: #e6e6e6;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin: 1rem;
+      width: 180px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: scale(1.05); }
+    .avatar {
+      width: 60px;
+      height: 60px;
+      background: grey;
+      border-radius: 50%;
+      margin: auto;
+      margin-bottom: 10px;
+    }
+    .faculty-photo {
+      width: 120px;
+      height: 120px;
+      background: grey;
+      border-radius: 50%;
+      margin-right: 2rem;
+    }
+    .faculty-box { display: flex; align-items: center; margin-bottom: 2rem; }
+    .faculty-info { font-size: 1rem; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 10px; }
+    .tab { background: #eef0f3; padding: 0.75rem 1rem; border-radius: 0.3rem; }
+    .search-bar {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 1rem 0;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+    .subheader { font-size: 1.1rem; color: #ccc; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage">
+  <div class="navbar">
+    <div>
+      <div style="font-size: 1.5rem; font-weight: bold;">Christ University</div>
+      <div style="font-size: 0.9rem; color: #ccc;">Computer Science and Engineering</div>
+    </div>
+  </div>
+  <div class="container" style="max-width: 400px; text-align: center;">
+    <h2>Welcome Back</h2>
+    <p>Please sign in</p>
+    <input type="text" id="email" placeholder="Email Address">
+    <input type="password" id="password" placeholder="Password">
+    <button id="loginButton">Log in</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="mainApp" class="hidden">
+  <div class="navbar">
+    <div>
+      <div style="font-size: 1.5rem; font-weight: bold;">Christ University</div>
+      <div class="subheader">Computer Science and Engineering</div>
+    </div>
+    <div>
+      <a onclick="showSection('profile')">Dashboard</a>
+      <a onclick="showSection('directory')">Faculty Directory</a>
+      <a onclick="showSection('editProfile')">Edit Profile</a>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div id="profile" class="container"></div>
+
+  <!-- EDIT PROFILE -->
+  <div id="editProfile" class="container hidden">
+    <h2>Edit Profile</h2>
+    <p>This is a simple placeholder form.</p>
+    <input type="text" placeholder="Full Name">
+    <input type="text" placeholder="Email Address">
+    <input type="text" placeholder="Phone Number">
+    <input type="text" placeholder="Room No.">
+    <button onclick="showSection('profile')">Save</button>
+  </div>
+
+  <!-- FACULTY DIRECTORY -->
+  <div id="directory" class="container hidden">
+    <div style="text-align: center;">
+      <h2>Faculty Directory</h2>
+      <p style="margin-top: -10px; font-size: 1rem; color: #555;">Computer Science and Engineering</p>
+    </div>
+    <input type="text" class="search-bar" id="search" placeholder="Search Faculty...">
+    <div class="card-wrapper" id="facultyCards"></div>
+  </div>
+
+  <!-- FACULTY DETAIL -->
+  <div id="facultyDetail" class="container hidden">
+    <div class="faculty-box">
+      <div class="faculty-photo"></div>
+      <div class="faculty-info">
+        <h2 id="facultyName"></h2>
+        <p id="facultyQual"></p>
+        <p id="facultyDesig"></p>
+        <p><strong>SCHOOL OF ENGINEERING AND TECHNOLOGY</strong><br>BANGALORE CAMPUS</p>
+        <button>Print Profile</button>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab">Articles</div>
+      <div class="tab">Book Chapters</div>
+      <div class="tab">Seminars</div>
+      <div class="tab">Talks</div>
+      <div class="tab">Projects</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let loggedInUser = null;
+
+  // Handle login
+  document.getElementById('loginButton').addEventListener('click', async () => {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!email || !password) {
+      alert("Enter credentials");
+      return;
+    }
+
+    try {
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        loggedInUser = data.user;
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        renderProfile(loggedInUser);
+        loadDirectory();
+        showSection('profile');
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error logging in');
+    }
+  });
+
+  // Render profile from user data
+  function renderProfile(user) {
+    document.getElementById('profile').innerHTML = `
+      <div class="profile-container">
+        <div class="profile-sidebar">
+          <div class="profile-photo">
+            <div class="edit-photo-btn">+</div>
+          </div>
+          <h3>${user.name}</h3>
+          <p>${user.qualification}</p>
+          <div class="quick-access">
+            <div class="section-title">QUICK ACCESS</div>
+            <ul>
+              <li>TEACHER 1</li>
+              <li>TEACHER 2</li>
+              <li>TEACHER 3</li>
+            </ul>
+          </div>
+          <button>Edit Photo</button>
+        </div>
+        <div class="profile-content">
+          <div class="profile-header">
+            <div>
+              <div class="profile-name">${user.name}</div>
+              <div class="profile-qualifications">${user.qualification}</div>
+            </div>
+            <button onclick="showSection('editProfile')">EDIT PROFILE</button>
+          </div>
+          <div class="profile-details">
+            <div class="detail-card"><div class="detail-title">Date of Joining</div>${user.joinDate || 'N/A'}</div>
+            <div class="detail-card"><div class="detail-title">Email</div>${user.email || 'N/A'}</div>
+            <div class="detail-card"><div class="detail-title">Supervisor</div>${user.supervisor || 'N/A'}</div>
+            <div class="detail-card"><div class="detail-title">LinkedIn</div><a href="${user.linkedin}" target="_blank">${user.linkedin || 'N/A'}</a></div>
+          </div>
+          <div class="section-title">Qualifications</div>
+          <ul>${(user.qualifications || []).map(q => `<li>${q}</li>`).join('')}</ul>
+          <div class="section-title">Research</div>
+          <div class="tags">${(user.research || []).map(r => `<div class="tag">${r}</div>`).join('')}</div>
+          <div class="section-title">Expertise</div>
+          <div class="tags">${(user.expertise || []).map(e => `<div class="tag">${e}</div>`).join('')}</div>
+        </div>
+      </div>`;
+  }
+
+  // Load faculty directory
+  async function loadDirectory() {
+    const emails = ['bejoy@christuniversity.in','deepa@christuniversity.in','daniel@christuniversity.in'];
+    const container = document.getElementById('facultyCards');
+    container.innerHTML = '';
+    for (let email of emails) {
+      try {
+        const res = await fetch(`/faculty/${email}`);
+        const f = await res.json();
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<div class="avatar"></div>${f.name}`;
+        card.onclick = () => loadFaculty(email);
+        container.appendChild(card);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }
+
+  // Load faculty details
+  async function loadFaculty(email) {
+    try {
+      const res = await fetch(`/faculty/${email}`);
+      const f = await res.json();
+      document.getElementById('facultyName').textContent = f.name || 'N/A';
+      document.getElementById('facultyQual').textContent = f.qualification || 'N/A';
+      document.getElementById('facultyDesig').textContent = f.designation || 'N/A';
+      showSection('facultyDetail');
+    } catch (err) {
+      console.error(err);
+      alert('Could not retrieve faculty info');
+    }
+  }
+
+  // Section switching
+  function showSection(id) {
+    ['profile', 'editProfile', 'directory', 'facultyDetail'].forEach(sec => {
+      document.getElementById(sec).classList.add('hidden');
+    });
+    document.getElementById(id).classList.remove('hidden');
+  }
+</script>
+</body>
+</html>
